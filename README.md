@@ -1,6 +1,10 @@
 # 2a_Stop_and_Wait_Protocol
 ## AIM 
 To write a python program to perform stop and wait protocol
+
+## Date: 01/02/2026
+## Roll.No: 212225040323
+
 ## ALGORITHM
 1. Start the program.
 2. Get the frame size from the user
@@ -8,7 +12,70 @@ To write a python program to perform stop and wait protocol
 4. To send frames to server from the client side.
 5. If your frames reach the server it will send ACK signal to client
 6. Stop the Program
+
 ## PROGRAM
+
+server.py
+
+```
+import socket
+
+s = socket.socket()
+s.bind(('localhost', 1234))
+s.listen(1)
+
+print("Server started, waiting for client...")
+conn, addr = s.accept()
+print("Connected with", addr)
+
+while True:
+    frame = conn.recv(1024).decode()
+    if frame == "END":
+        print("Transmission completed")
+        break
+
+    print("Frame received:", frame)
+    conn.send("ACK".encode())
+
+conn.close()
+s.close()
+```
+
+client.py
+
+```
+import socket
+
+c = socket.socket()
+c.connect(('localhost', 1234))
+
+frame_size = int(input("Enter number of frames: "))
+
+for i in range(frame_size):
+    frame = f"Frame {i+1}"
+    print("Sending:", frame)
+    c.send(frame.encode())
+
+    ack = c.recv(1024).decode()
+    print("Received:", ack)
+
+c.send("END".encode())
+c.close()
+```
+
 ## OUTPUT
+
+Server-Side
+
+![alt text](<Screenshot 2026-02-02 142151.png>)
+
+Client-Side
+
+![alt text](<Screenshot 2026-02-02 142212.png>)
+
+Execution
+
+![alt text](<Screenshot 2026-02-02 142130.png>)
+
 ## RESULT
 Thus, python program to perform stop and wait protocol was successfully executed.
